@@ -5,22 +5,33 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
       - name: set up JDK 17
         uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
+
       - name: Install Cordova
         run: npm install -g cordova
+
       - name: Build Android
         run: |
-          unzip My_Csoft_App.zip -d www_content
-          cordova create project com.csoft.app Csoft
+          # ফাইল আনজিপ করা
+          unzip My_Csoft_App.zip -d build_files
+          
+          # কর্ডোভা প্রোজেক্ট সেটআপ
+          cordova create project com.csoft.app "Csoft"
           cd project
+          
+          # আপনার কোড কপি করা
           rm -rf www/*
-          cp -r ../www_content/* www/
+          cp -r ../build_files/* www/
+          
+          # অ্যান্ড্রয়েড প্ল্যাটফর্ম এবং ফাইনাল বিল্ড
           cordova platform add android
           cordova build android --no-telemetry
+
       - name: Upload APK
         uses: actions/upload-artifact@v3
         with:
