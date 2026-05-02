@@ -20,7 +20,7 @@ jobs:
           # সব ফাইল একবার দেখে নেওয়া (debug)
           ls -R
           
-          # জিপ ফাইল আনজip করার চেষ্টা
+          # জিপ ফাইল আনজিপ করার চেষ্টা
           if [ -f "My_Csoft_App.zip" ]; then
             unzip My_Csoft_App.zip
           else
@@ -32,11 +32,11 @@ jobs:
           cd project
           rm -rf www/*
           
-          # যদি ভেতর ফোল্ডার থাকে তবে সেখান থেকে কপি, নাহলে মেইন থেকে
+          # আপনার ফোল্ডার স্ট্রাকচার অনুযায়ী কপি
           if [ -d "../My_Csoft_App" ]; then
             cp -r ../My_Csoft_App/* www/
           else
-            cp -r ../* www/ --exclude=project --exclude=My_Csoft_App.zip
+            cp -r ../* www/ --exclude=project
           fi
           
           cordova platform add android
