@@ -17,18 +17,11 @@ jobs:
 
       - name: Build Android
         run: |
-          # ফাইল আনজিপ করা
-          unzip My_Csoft_App.zip -d build_files
-          
-          # কর্ডোভা প্রোজেক্ট সেটআপ
-          cordova create project com.csoft.app "Csoft"
+          unzip My_Csoft_App.zip -d build_content
+          cordova create project com.csoft.app Csoft
           cd project
-          
-          # আপনার কোড কপি করা
           rm -rf www/*
-          cp -r ../build_files/* www/
-          
-          # অ্যান্ড্রয়েড প্ল্যাটফর্ম এবং ফাইনাল বিল্ড
+          cp -r ../build_content/* www/
           cordova platform add android
           cordova build android --no-telemetry
 
