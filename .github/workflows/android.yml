@@ -17,18 +17,28 @@ jobs:
 
       - name: Build Android
         run: |
-          # ১. জিপ ফাইল আনজিপ করা
-          unzip My_Csoft_App.zip
+          # সব ফাইল একবার দেখে নেওয়া (debug)
+          ls -R
           
-          # ২. কর্ডোভা প্রোজেক্ট তৈরি করা
+          # জিপ ফাইল আনজip করার চেষ্টা
+          if [ -f "My_Csoft_App.zip" ]; then
+            unzip My_Csoft_App.zip
+          else
+            echo "Error: My_Csoft_App.zip not found!"
+            exit 1
+          fi
+          
           cordova create project com.csoft.app Csoft
           cd project
-          
-          # ৩. জিপের ভেতর থাকা ফোল্ডার থেকে ফাইল কপি করা
           rm -rf www/*
-          cp -r ../My_Csoft_App/* www/
           
-          # ৪. অ্যান্ড্রয়েড বিল্ড করা
+          # যদি ভেতর ফোল্ডার থাকে তবে সেখান থেকে কপি, নাহলে মেইন থেকে
+          if [ -d "../My_Csoft_App" ]; then
+            cp -r ../My_Csoft_App/* www/
+          else
+            cp -r ../* www/ --exclude=project --exclude=My_Csoft_App.zip
+          fi
+          
           cordova platform add android
           cordova build android --no-telemetry
 
