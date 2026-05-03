@@ -6,34 +6,26 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Debug File Structure
-        run: |
-          echo "--- Current Directory Content ---"
-          ls -R
-          echo "--- Unzipping and Checking ---"
-          unzip My_Csoft_App.zip -d debug_folder
-          ls -R debug_folder
-
-      - name: set up JDK 17
+      - name: setup java
         uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Install Cordova
+      - name: install cordova
         run: npm install -g cordova
 
-      - name: Build Android
+      - name: build app
         run: |
+          unzip My_Csoft_App.zip -d build_files
           cordova create project com.csoft.app Csoft
           cd project
           rm -rf www/*
-          # সরাসরি জিপের ফাইলগুলো কপি করা
-          cp -r ../debug_folder/* www/
+          cp -r ../build_files/* www/
           cordova platform add android
           cordova build android --no-telemetry
 
-      - name: Upload APK
+      - name: upload
         uses: actions/upload-artifact@v3
         with:
           name: Csoft-APK
